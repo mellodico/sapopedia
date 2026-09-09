@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki — SapoPédia</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/components.js" defer></script>
+  <script src="/js/wiki.js" defer></script>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <site-header active="wiki"></site-header>
+
+    <div class="wiki-layout">
+
+      <aside class="wiki-sidebar">
+        <span class="wiki-sidebar__stamp">Wiki</span>
+
+        <div class="search-box small">
+          <label class="visually-hidden" for="wiki-search">Buscar na Wiki</label>
+          <input type="text" id="wiki-search" placeholder="Buscar na wiki...">
+        </div>
+
+        <h3 class="wiki-sidebar__heading">Navegar</h3>
+        <nav class="wiki-sidebar__nav" aria-label="Navegação da Wiki">
+          <ul>
+            <li><a href="#" class="active" data-panel="inicio">Página principal</a></li>
+            <li><a href="#" data-panel="glossario">Glossário</a></li>
+            <li><a href="#" data-panel="familias">Famílias</a></li>
+            <li><a href="#" data-panel="generos">Gêneros</a></li>
+            <li><a href="#" data-panel="especies">Espécies</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="wiki-main">
+
+        <div class="wiki-panel is-active" id="panel-inicio">
+
+          <section class="wiki-welcome">
+            <div class="wiki-welcome__text">
+              <h2>Bem-vindo(a) à SapoPédia!</h2>
+              <p>Esta é a wiki colaborativa sobre sapos, rãs, pererecas e outros anfíbios do Brasil. Veja abaixo como
+                encontrar o que você procura.</p>
+            </div>
+
+            <div>
+              <h3 class="wiki-highlights__title">Como usar esta wiki</h3>
+              <ol class="wiki-steps">
+                <li><strong>Busque um termo:</strong> digite o nome de uma espécie, família ou gênero no campo de busca,
+                  na barra lateral.</li>
+                <li><strong>Navegue por categoria:</strong> clique em uma das opções do menu à esquerda para ver a lista
+                  completa daquela categoria, sem sair desta página.</li>
+                <li><strong>Abra uma ficha:</strong> clique em qualquer item da lista para abrir a página completa, com
+                  descrição e informações sobre o habitat.</li>
+                <li><strong>Contribua:</strong> crie uma conta para sugerir edições, enviar fotos e ajudar a manter a
+                  wiki atualizada.</li>
+              </ol>
+            </div>
+          </section>
+
+        </div>
+
+        <div class="wiki-panel" id="panel-glossario">
+          <section class="wiki-section">
+            <div class="wiki-section__header">
+              <span class="summary-left">Glossário</span>
+            </div>
+            <div class="wiki-section__body wiki-alpha-list">
+              <div class="alpha-group">
+                <h4 class="alpha-group__letter">A</h4>
+                <div class="alpha-group__items">
+                  <a class="wiki-index-link" href="/glossario#anuro">Anuro</a>
+                </div>
+              </div>
+              <div class="alpha-group">
+                <h4 class="alpha-group__letter">G</h4>
+                <div class="alpha-group__items">
+                  <a class="wiki-index-link" href="/glossario#girino">Girino</a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="wiki-panel" id="panel-familias">
+          <section class="wiki-section">
+            <div class="wiki-section__header">
+              <span class="summary-left">Famílias</span>
+            </div>
+            <div class="wiki-section__body wiki-not-implemented">
+              <p>Esta seção ainda não foi implementada.</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="wiki-panel" id="panel-generos">
+          <section class="wiki-section">
+            <div class="wiki-section__header">
+              <span class="summary-left">Gêneros</span>
+            </div>
+            <div class="wiki-section__body wiki-not-implemented">
+              <p>Esta seção ainda não foi implementada.</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="wiki-panel" id="panel-especies">
+          <section class="wiki-section">
+            <div class="wiki-section__header">
+              <span class="summary-left">Espécies</span>
+            </div>
+            <div class="wiki-table-wrapper">
+              <table class="wiki-table">
+                <caption>Espécies de anuros brasileiros catalogadas</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Espécie</th>
+                    <th scope="col">Nome popular</th>
+                    <th scope="col">Bioma</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><em>Rhinella schneideri</em></td>
+                    <td>Sapo-cururu</td>
+                    <td>Cerrado</td>
+                  </tr>
+                  <tr>
+                    <td><em>Boana albomarginata</em></td>
+                    <td>Perereca-verde</td>
+                    <td>Mata Atlântica</td>
+                  </tr>
+                  <tr>
+                    <td><em>Phyllobates terribilis</em></td>
+                    <td>Sapo-de-dardo</td>
+                    <td>Amazônia</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+      </main>
+    </div>
+
+    <site-footer></site-footer>
+
+  </div>
+
+</body>
+
+</html>

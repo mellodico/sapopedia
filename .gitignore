@@ -1,0 +1,40 @@
+# Maven build output
+target/
+HELP.md
+
+# Maven wrapper cache
+.mvn/wrapper/maven-wrapper.jar
+
+# Java compiled files
+*.class
+
+# Spring Boot packaged applications
+*.jar
+*.war
+*.ear
+
+# IDEs and editor metadata
+.idea/
+*.iws
+*.iml
+*.ipr
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+.vscode/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Local environment and logs
+.env
+.env.*
+!.env.example
+*.log

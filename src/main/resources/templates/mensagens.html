@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/components.js" defer></script>
+  <script src="/js/script.js" defer></script>
+  <title>SapoPédia - Mensagens</title>
+</head>
+
+<body class="account-page">
+  <site-header active="mensagens"></site-header>
+  <main>
+    <section class="account-panel">
+      <h2>Mensagens</h2>
+      <p class="account-intro">Compartilhe suas opiniões, sugestões e mensagens conosco.</p>
+      <form class="account-form" data-form="mensagens" action="/mensagens" method="post">
+        <label for="titulo">Título</label>
+        <input type="text" name="titulo" id="titulo" required minlength="2" maxlength="80">
+        <label for="tipo">Tipo de mensagem</label>
+        <select name="tipo" id="tipo">
+          <option value="opiniao">Opinião</option>
+          <option value="sugestao">Sugestão</option>
+          <option value="outro">Outro</option>
+        </select>
+        <label for="mensagem">Mensagem</label>
+        <textarea name="mensagem" id="mensagem" rows="8" required minlength="5" maxlength="500"
+          placeholder="Escreva sua mensagem aqui..."></textarea>
+        <p class="form-message" role="status"></p>
+        <div class="form-buttons">
+          <button type="submit">Enviar</button>
+          <button type="reset">Limpar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+  <site-footer></site-footer>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/components.js" defer></script>
+  <script src="/js/script.js" defer></script>
+  <title>SapoPédia - Criar conta</title>
+</head>
+
+<body class="account-page">
+  <site-header></site-header>
+  <main>
+    <section class="account-panel">
+      <h2>Criar conta</h2>
+      <p class="account-intro">Monte seu perfil para participar das conversas e organizar suas descobertas.</p>
+      <form class="account-form" data-form="registro">
+        <label for="nome">Nome completo</label>
+        <input type="text" id="nome" name="nome" autocomplete="name" required minlength="2">
+        <label for="usuario">Nome de usuário</label>
+        <input type="text" id="usuario" name="usuario" autocomplete="username" required minlength="3">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" autocomplete="email" required>
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" autocomplete="new-password" required minlength="6">
+        <label for="confirmacao">Confirmar senha</label>
+        <input type="password" id="confirmacao" name="confirmacao" autocomplete="new-password" required minlength="6">
+        <p class="form-message" role="alert"></p>
+        <button type="submit">Cadastrar</button>
+      </form>
+      <div class="account-links"><span>Já possui uma conta?</span><a href="login.html">Entrar</a></div>
+    </section>
+  </main>
+  <site-footer></site-footer>
+</body>
+
+</html>

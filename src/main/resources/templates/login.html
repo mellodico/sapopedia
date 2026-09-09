@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/components.js" defer></script>
+  <script src="/js/script.js" defer></script>
+  <title>Entrar - SapoPédia</title>
+</head>
+
+<body class="account-page">
+  <site-header></site-header>
+  <main>
+    <section class="account-panel">
+      <h2>Entrar</h2>
+      <p class="account-intro">Acesse seu espaço no brejo e continue sua exploração.</p>
+      <form class="account-form" data-form="login">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" autocomplete="email" required>
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" autocomplete="current-password" required minlength="6">
+        <p class="form-message" role="alert"></p>
+        <button type="submit">Entrar</button>
+      </form>
+      <div class="account-links"><span>Ainda não tem conta?</span><a href="registro.html">Criar cadastro</a></div>
+    </section>
+  </main>
+  <site-footer></site-footer>
+</body>
+
+</html>
