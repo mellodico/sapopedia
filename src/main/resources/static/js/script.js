@@ -50,7 +50,6 @@ function initializeMessages() {
   });
 
   messagesForm.addEventListener("submit", (event) => {
-    event.preventDefault();
     const hasTitle = titleField.value.trim().length > 0;
     const hasMessage = messageField.value.trim().length > 0;
 
@@ -58,12 +57,9 @@ function initializeMessages() {
     messageField.classList.toggle("is-invalid", !hasMessage);
 
     if (!hasTitle && !hasMessage) {
+      event.preventDefault();
       showMessage(feedback, "Preencha o título e escreva uma mensagem.", true);
-      return;
     }
-
-    showMessage(feedback, "Mensagem enviada com sucesso.");
-    messagesForm.reset();
   });
 }
 
@@ -101,7 +97,7 @@ function initializeAuth() {
       }
 
       localStorage.setItem(SESSION_KEY, "true");
-      window.location.href = "conta.html";
+      window.location.href = "/conta";
     });
   }
 
@@ -159,7 +155,7 @@ function initializeAuth() {
       };
       localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
       localStorage.setItem(SESSION_KEY, "true");
-      window.location.href = "/conta.html";
+      window.location.href = "/conta";
     });
   }
 
@@ -167,7 +163,7 @@ function initializeAuth() {
     const account = getAccount();
     const loggedIn = localStorage.getItem(SESSION_KEY) === "true";
     if (!account || !loggedIn) {
-      window.location.href = "/login.html";
+      window.location.href = "/login";
       return;
     }
 
@@ -212,7 +208,7 @@ function initializeAuth() {
       ?.addEventListener("click", () => {
         if (confirm("Tem certeza que deseja sair da conta?")) {
           localStorage.removeItem(SESSION_KEY);
-          window.location.href = "/login.html";
+          window.location.href = "/login";
         }
       });
   }

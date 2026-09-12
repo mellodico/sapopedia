@@ -7,36 +7,89 @@
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/components.js" defer></script>
   <script src="/js/script.js" defer></script>
-  <title>SapoPédia - Mensagens</title>
+  <script src="/js/forum.js" defer></script>
+  <title>SapoPédia - Fórum</title>
 </head>
 
-<body class="account-page">
-  <site-header active="mensagens"></site-header>
-  <main>
-    <section class="account-panel">
-      <h2>Mensagens</h2>
-      <p class="account-intro">Compartilhe suas opiniões, sugestões e mensagens conosco.</p>
-      <form class="account-form" data-form="mensagens" action="/mensagens" method="post">
-        <label for="titulo">Título</label>
-        <input type="text" name="titulo" id="titulo" required minlength="2" maxlength="80">
-        <label for="tipo">Tipo de mensagem</label>
-        <select name="tipo" id="tipo">
-          <option value="opiniao">Opinião</option>
-          <option value="sugestao">Sugestão</option>
-          <option value="outro">Outro</option>
-        </select>
-        <label for="mensagem">Mensagem</label>
-        <textarea name="mensagem" id="mensagem" rows="8" required minlength="5" maxlength="500"
-          placeholder="Escreva sua mensagem aqui..."></textarea>
-        <p class="form-message" role="status"></p>
-        <div class="form-buttons">
-          <button type="submit">Enviar</button>
-          <button type="reset">Limpar</button>
+<body>
+  <div class="container">
+    <site-header active="mensagens"></site-header>
+
+    <main>
+      <section class="forum-page">
+        <div class="page-header">
+          <div>
+            <h2>Fórum da comunidade</h2>
+            <p>Compartilhe opiniões, sugestões e mensagens com outros membros da SapoPédia.</p>
+          </div>
+          <div class="search-box">
+            <input type="search" id="forum-search" placeholder="Buscar por título ou conteúdo..."
+              aria-label="Buscar posts">
+            <select id="forum-filter-tipo" aria-label="Filtrar por tipo de post">
+              <option value="todos">Todos os tipos</option>
+              <option value="opiniao">Opinião</option>
+              <option value="sugestao">Sugestão</option>
+              <option value="avistamento">Avistamento</option>
+              <option value="duvida">Dúvida</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
         </div>
-      </form>
-    </section>
-  </main>
-  <site-footer></site-footer>
+
+        <div class="forum-layout">
+          <aside class="account-panel forum-new-post">
+            <h2>Novo post</h2>
+            <p class="account-intro">Compartilhe suas opiniões, sugestões e mensagens conosco.</p>
+            <form class="account-form" data-form="mensagens" action="/mensagens" method="post">
+              <label for="titulo">Título</label>
+              <input type="text" name="titulo" id="titulo" required minlength="2" maxlength="80">
+
+              <label for="tipo">Tipo de mensagem</label>
+              <select name="tipo" id="tipo">
+                <option value="opiniao">Opinião</option>
+                <option value="sugestao">Sugestão</option>
+                <option value="avistamento">Avistamento</option>
+                <option value="duvida">Dúvida</option>
+                <option value="outro">Outro</option>
+              </select>
+
+              <label for="mensagem">Mensagem</label>
+              <textarea name="mensagem" id="mensagem" rows="8" required minlength="5" maxlength="500"
+                placeholder="Escreva sua mensagem aqui..."></textarea>
+
+              <p class="form-message" role="status"></p>
+              <p class="form-message" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
+
+              <div class="form-buttons">
+                <button type="submit">Enviar</button>
+                <button type="reset">Limpar</button>
+              </div>
+            </form>
+          </aside>
+
+          <div class="forum-feed">
+            <p class="forum-feed__count" id="forum-count"></p>
+            <p class="forum-empty" id="forum-empty" hidden>Nenhum post encontrado com esses filtros.</p>
+            <ul class="forum-list" id="forum-list">
+              <li class="forum-post" th:each="mensagem : ${mensagens}"
+                th:attr="data-titulo=${mensagem.titulo},data-corpo=${mensagem.mensagem},data-tipo=${mensagem.tipo}">
+                <div class="forum-post__header">
+                  <h3 class="forum-post__title" th:text="${mensagem.titulo}">Título da mensagem</h3>
+                  <span class="forum-post__badge" th:classappend="' forum-post__badge--' + ${mensagem.tipo}"
+                    th:text="${mensagem.tipoLabel()}">Tipo</span>
+                </div>
+                <p class="forum-post__author">por <strong th:text="${mensagem.autor}">Autor</strong></p>
+                <p class="forum-post__preview" th:text="${mensagem.mensagem}">Conteúdo da mensagem</p>
+                <span class="forum-post__image-tag" th:if="${mensagem.temImagem}">🖼 Contém imagem</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+  </div>
 </body>
 
 </html>
