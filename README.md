@@ -28,13 +28,13 @@ Com o Java instalado, execute na raiz do projeto:
 ./mvnw spring-boot:run
 ```
 
-Também é possível executar pela IDE: abra o arquivo `SapopediaApplication.java`, clique em **Run Java** e aguarde a inicialização da aplicação.
-
 No Windows, use:
 
 ```bat
 mvnw.cmd spring-boot:run
 ```
+
+Também é possível executar pela IDE: abra o arquivo `SapopediaApplication.java`, clique em **Run Java** e aguarde a inicialização da aplicação.
 
 Depois, acesse `http://localhost:8080`.
 
