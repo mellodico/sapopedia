@@ -38,3 +38,6 @@ nbdist/
 .env.*
 !.env.example
 *.log
+
+# Configuração local com segredos (veja config/application.properties.example)
+/config/application.properties

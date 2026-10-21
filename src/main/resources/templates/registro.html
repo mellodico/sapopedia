@@ -11,23 +11,24 @@
 </head>
 
 <body class="account-page">
-  <site-header></site-header>
+  <site-header th:attr="usuario=${usuarioLogado?.username}"></site-header>
   <main>
     <section class="account-panel">
       <h2>Criar conta</h2>
       <p class="account-intro">Monte seu perfil para participar das conversas e organizar suas descobertas.</p>
-      <form class="account-form" data-form="registro">
+      <form class="account-form" data-form="registro" th:action="@{/registro}" method="post">
         <label for="nome">Nome completo</label>
-        <input type="text" id="nome" name="nome" autocomplete="name" required minlength="2">
+        <input type="text" id="nome" name="nome" autocomplete="name" required minlength="2" maxlength="100" th:value="${nome}">
         <label for="usuario">Nome de usuário</label>
-        <input type="text" id="usuario" name="usuario" autocomplete="username" required minlength="3">
+        <input type="text" id="usuario" name="usuario" autocomplete="username" required minlength="3" maxlength="50"
+          pattern="[A-Za-z0-9_]+" title="Use apenas letras, números ou _" th:value="${usuario}">
         <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" autocomplete="email" required>
+        <input type="email" id="email" name="email" autocomplete="email" required maxlength="100" th:value="${email}">
         <label for="senha">Senha</label>
         <input type="password" id="senha" name="senha" autocomplete="new-password" required minlength="6">
         <label for="confirmacao">Confirmar senha</label>
         <input type="password" id="confirmacao" name="confirmacao" autocomplete="new-password" required minlength="6">
-        <p class="form-message" role="alert"></p>
+        <p class="form-message" role="alert" th:text="${erro}"></p>
         <button type="submit">Cadastrar</button>
       </form>
       <div class="account-links"><span>Já possui uma conta?</span><a href="/login">Entrar</a></div>

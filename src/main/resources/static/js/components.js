@@ -28,6 +28,8 @@ const NAV_ITEMS = [
 class SiteHeader extends HTMLElement {
   connectedCallback() {
     const active = this.getAttribute("active");
+    // Preenchido pelo servidor; o banco só aceita letras, números e _ no nome de usuário
+    const usuario = this.getAttribute("usuario");
     const navHtml = NAV_ITEMS.map(
         (item) => `
       <a class="nav-item${item.key === active ? " active" : ""}" href="${item.href}">
@@ -45,6 +47,18 @@ class SiteHeader extends HTMLElement {
           <p>A WIKI E COMUNIDADE DOS ANUROS BRASILEIROS</p>
         </div>
         <div class="header-actions">
+          ${usuario ? `
+          <a class="btn btn-outline" href="/conta">
+            <img class="icon-img" src="/img/person-fill-svgrepo-com.svg" alt="">
+            ${usuario}
+          </a>
+          <form action="/logout" method="post">
+            <button class="btn btn-solid" type="submit">
+              <img class="icon-img icon-invert" src="/img/enter-outline-svgrepo-com.svg" alt="">
+              Sair
+            </button>
+          </form>
+          ` : `
           <a class="btn btn-outline" href="/login">
             <img class="icon-img" src="/img/enter-outline-svgrepo-com.svg" alt="">
             Entrar
@@ -53,6 +67,7 @@ class SiteHeader extends HTMLElement {
             <img class="icon-img icon-invert" src="/img/person-fill-svgrepo-com.svg" alt="">
             Criar conta
           </a>
+          `}
         </div>
       </header>
 

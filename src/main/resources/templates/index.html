@@ -13,7 +13,7 @@
 
   <div class="container">
 
-    <site-header active="inicio"></site-header>
+    <site-header active="inicio" th:attr="usuario=${usuarioLogado?.username}"></site-header>
 
     <main>
       <section class="hero">

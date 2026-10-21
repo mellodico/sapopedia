@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/components.js" defer></script>
+  <script src="/js/script.js" defer></script>
+  <title th:text="${mensagem.titulo} + ' - SapoPédia'">SapoPédia - Post</title>
+</head>
+
+<body>
+  <div class="container">
+    <site-header active="mensagens" th:attr="usuario=${usuarioLogado?.username}"></site-header>
+
+    <main>
+      <section class="post-page">
+        <a class="post-back" th:href="@{/mensagens}">← Voltar ao fórum</a>
+
+        <article class="post-detail">
+          <div class="forum-post__header">
+            <h1 class="forum-post__title" th:text="${mensagem.titulo}">Título da mensagem</h1>
+            <span class="forum-post__badge" th:classappend="' forum-post__badge--' + ${mensagem.tipo}"
+              th:text="${mensagem.tipoLabel()}">Tipo</span>
+          </div>
+          <p class="forum-post__author">por <strong th:text="${mensagem.autor.username}">Autor</strong> em
+            <time th:datetime="${mensagem.criadoEm}"
+              th:text="${#temporals.format(mensagem.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</time></p>
+          <p class="post-detail__body" th:text="${mensagem.mensagem}">Conteúdo da mensagem</p>
+        </article>
+
+        <section class="post-comments" id="comentarios">
+          <h2 th:text="'Comentários (' + ${#lists.size(comentarios)} + ')'">Comentários</h2>
+
+          <p class="post-comments__empty" th:if="${#lists.isEmpty(comentarios)}">
+            Ainda não há comentários. Seja o primeiro a comentar!
+          </p>
+
+          <ul class="comment-list" th:unless="${#lists.isEmpty(comentarios)}">
+            <li class="comment" th:each="comentario : ${comentarios}">
+              <p class="comment__author">por <strong th:text="${comentario.autor.username}">Autor</strong> em
+                <time th:datetime="${comentario.criadoEm}"
+                  th:text="${#temporals.format(comentario.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</time></p>
+              <p class="comment__text" th:text="${comentario.texto}">Texto do comentário</p>
+            </li>
+          </ul>
+
+          <div class="account-panel">
+            <h2>Deixe um comentário</h2>
+            <p class="forum-login-cta" th:unless="${usuarioLogado}">
+              <a th:href="@{/login(voltar=${'/mensagens/' + mensagem.id})}">Entre</a> ou
+              <a th:href="@{/registro}">crie uma conta</a> para comentar.
+            </p>
+            <form th:if="${usuarioLogado}" class="account-form" th:action="@{/mensagens/{id}/comentarios(id=${mensagem.id})}" method="post">
+              <label for="comentario">Comentário</label>
+              <textarea name="comentario" id="comentario" rows="5" required minlength="2" maxlength="500"
+                placeholder="Escreva seu comentário aqui..."></textarea>
+
+              <p class="form-message" role="status" th:if="${erro}" th:text="${erro}"></p>
+              <p class="form-message form-message--success" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
+
+              <div class="form-buttons">
+                <button type="submit">Comentar</button>
+                <button type="reset">Limpar</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+  </div>
+</body>
+
+</html>

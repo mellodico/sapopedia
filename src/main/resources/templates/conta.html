@@ -11,26 +11,29 @@
 </head>
 
 <body class="account-page">
-  <site-header></site-header>
+  <site-header th:attr="usuario=${usuarioLogado?.username}"></site-header>
   <main>
     <section class="account-panel">
       <h2>Minha conta</h2>
       <p class="account-intro">Aqui estão seus dados. Altere o que quiser e mantenha seu perfil atualizado.</p>
-      <form class="account-form" data-form="conta">
+      <form class="account-form" data-form="conta" th:action="@{/conta}" method="post">
         <label for="nome">Nome completo</label>
-        <input type="text" id="nome" name="nome" autocomplete="name" required minlength="2">
+        <input type="text" id="nome" name="nome" autocomplete="name" required minlength="2" maxlength="100" th:value="${perfil.name}">
         <label for="usuario">Nome de usuário</label>
-        <input type="text" id="usuario" name="usuario" autocomplete="username" required minlength="3">
+        <input type="text" id="usuario" name="usuario" autocomplete="username" required minlength="3" maxlength="50"
+          pattern="[A-Za-z0-9_]+" title="Use apenas letras, números ou _" th:value="${perfil.username}">
         <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" autocomplete="email" required>
+        <input type="email" id="email" name="email" autocomplete="email" required maxlength="100" th:value="${perfil.email}">
         <label for="bio">Sobre você</label>
         <textarea id="bio" name="bio" rows="5" maxlength="240"
-          placeholder="Conte um pouco sobre sua paixão pelos anuros."></textarea>
-        <p class="form-message" role="status"></p>
+          placeholder="Conte um pouco sobre sua paixão pelos anuros." th:text="${perfil.bio}"></textarea>
+        <p class="form-message" role="status" th:if="${erro}" th:text="${erro}"></p>
+        <p class="form-message form-message--success" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
         <button type="submit">Salvar alterações</button>
       </form>
-      <div class="account-actions"><a href="/">Voltar ao início</a><button type="button"
-          data-action="logout">Sair da conta</button></div>
+      <div class="account-actions"><a href="/">Voltar ao início</a>
+        <form th:action="@{/logout}" method="post" data-action="logout"><button type="submit">Sair da conta</button></form>
+      </div>
     </section>
   </main>
   <site-footer></site-footer>

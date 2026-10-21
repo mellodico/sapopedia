@@ -13,7 +13,7 @@
 
 <body>
   <div class="container">
-    <site-header active="mensagens"></site-header>
+    <site-header active="mensagens" th:attr="usuario=${usuarioLogado?.username}"></site-header>
 
     <main>
       <section class="forum-page">
@@ -40,7 +40,12 @@
           <aside class="account-panel forum-new-post">
             <h2>Novo post</h2>
             <p class="account-intro">Compartilhe suas opiniões, sugestões e mensagens conosco.</p>
-            <form class="account-form" data-form="mensagens" action="/mensagens" method="post">
+            <p class="forum-login-cta" th:unless="${usuarioLogado}">
+              <a th:href="@{/login(voltar='/mensagens')}">Entre</a> ou <a th:href="@{/registro}">crie uma conta</a>
+              para publicar no fórum.
+            </p>
+            <form class="account-form" data-form="mensagens" th:action="@{/mensagens}" method="post"
+              th:if="${usuarioLogado}">
               <label for="titulo">Título</label>
               <input type="text" name="titulo" id="titulo" required minlength="2" maxlength="80">
 
@@ -57,8 +62,8 @@
               <textarea name="mensagem" id="mensagem" rows="8" required minlength="5" maxlength="500"
                 placeholder="Escreva sua mensagem aqui..."></textarea>
 
-              <p class="form-message" role="status"></p>
-              <p class="form-message" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
+              <p class="form-message" role="status" th:text="${erro}"></p>
+              <p class="form-message form-message--success" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
 
               <div class="form-buttons">
                 <button type="submit">Enviar</button>
@@ -70,17 +75,26 @@
           <div class="forum-feed">
             <p class="forum-feed__count" id="forum-count"></p>
             <p class="forum-empty" id="forum-empty" hidden>Nenhum post encontrado com esses filtros.</p>
+            <p class="forum-empty" th:if="${#lists.isEmpty(mensagens)}">Ainda não há posts. Que tal começar a conversa?</p>
             <ul class="forum-list" id="forum-list">
               <li class="forum-post" th:each="mensagem : ${mensagens}"
                 th:attr="data-titulo=${mensagem.titulo},data-corpo=${mensagem.mensagem},data-tipo=${mensagem.tipo}">
                 <div class="forum-post__header">
-                  <h3 class="forum-post__title" th:text="${mensagem.titulo}">Título da mensagem</h3>
+                  <h3 class="forum-post__title">
+                    <a class="forum-post__link" th:href="@{/mensagens/{id}(id=${mensagem.id})}"
+                      th:text="${mensagem.titulo}">Título da mensagem</a>
+                  </h3>
                   <span class="forum-post__badge" th:classappend="' forum-post__badge--' + ${mensagem.tipo}"
                     th:text="${mensagem.tipoLabel()}">Tipo</span>
                 </div>
-                <p class="forum-post__author">por <strong th:text="${mensagem.autor}">Autor</strong></p>
+                <p class="forum-post__author">por <strong th:text="${mensagem.autor.username}">Autor</strong></p>
                 <p class="forum-post__preview" th:text="${mensagem.mensagem}">Conteúdo da mensagem</p>
-                <span class="forum-post__image-tag" th:if="${mensagem.temImagem}">🖼 Contém imagem</span>
+                <div class="forum-post__footer">
+                  <time class="forum-post__date" th:datetime="${mensagem.criadoEm}"
+                    th:text="${#temporals.format(mensagem.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</time>
+                  <span class="forum-post__comments"
+                    th:text="${mensagem.totalComentarios} + (${mensagem.totalComentarios} == 1 ? ' comentário' : ' comentários')">0 comentários</span>
+                </div>
               </li>
             </ul>
           </div>

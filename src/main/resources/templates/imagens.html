@@ -11,7 +11,7 @@
 
 <body>
   <div class="container">
-    <site-header active="imagens"></site-header>
+    <site-header active="imagens" th:attr="usuario=${usuarioLogado?.username}"></site-header>
 
     <main class="gallery-page">
       <section class="page-header">

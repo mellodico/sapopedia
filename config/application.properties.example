@@ -1,0 +1,2 @@
+# Copie para config/application.properties e preencha com a senha do seu banco
+spring.datasource.password=

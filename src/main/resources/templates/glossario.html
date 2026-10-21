@@ -13,7 +13,7 @@
 
   <div class="container">
 
-    <site-header active="wiki"></site-header>
+    <site-header active="wiki" th:attr="usuario=${usuarioLogado?.username}"></site-header>
 
     <main class="glossary-page">
       <nav class="breadcrumb" aria-label="Trilha de navegação">
