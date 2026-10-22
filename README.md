@@ -34,6 +34,8 @@ cp config/application.properties.example config/application.properties
 
 O arquivo `config/application.properties` é ignorado pelo git. Também é possível usar as variáveis de ambiente `DB_PASSWORD`, `DB_URL` e `DB_USERNAME`.
 
+As fotos enviadas nos posts do fórum são gravadas na pasta `uploads/` da raiz do projeto (também ignorada pelo git). Para usar outra pasta, defina a variável de ambiente `UPLOADS_DIR`.
+
 Com o Java instalado, execute na raiz do projeto:
 
 ```bash
@@ -53,11 +55,10 @@ Depois, acesse `http://localhost:8080`.
 ## Principais rotas
 
 - `GET /` - página inicial/dashboard
-- `GET /wiki` - wiki e navegação por categorias
-- `GET /glossario` - listagem de termos do glossário
+- `GET /wiki` - wiki com glossário, famílias, gêneros e espécies
 - `GET /imagens` - galeria de imagens
 - `GET /mensagens` - listagem de posts do fórum (e formulário de novo post para usuários logados)
-- `POST /mensagens` - publica um post (exige login) e redireciona para `/mensagens`
+- `POST /mensagens` - publica um post, com até 4 fotos opcionais (exige login), e redireciona para `/mensagens`
 - `GET /mensagens/{id}` - post completo com seus comentários
 - `POST /mensagens/{id}/comentarios` - publica um comentário no post (exige login)
 - `GET /login` / `POST /login` - tela de login / autenticação

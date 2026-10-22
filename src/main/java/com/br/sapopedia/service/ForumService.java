@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.br.sapopedia.model.Comentario;
 import com.br.sapopedia.model.Topico;
@@ -20,11 +21,14 @@ public class ForumService {
     private final TopicoRepository topicos;
     private final ComentarioRepository comentarios;
     private final UsuarioRepository usuarios;
+    private final FotoStorage fotoStorage;
 
-    public ForumService(TopicoRepository topicos, ComentarioRepository comentarios, UsuarioRepository usuarios) {
+    public ForumService(TopicoRepository topicos, ComentarioRepository comentarios, UsuarioRepository usuarios,
+                        FotoStorage fotoStorage) {
         this.topicos = topicos;
         this.comentarios = comentarios;
         this.usuarios = usuarios;
+        this.fotoStorage = fotoStorage;
     }
 
     @Transactional(readOnly = true)
@@ -38,8 +42,19 @@ public class ForumService {
     }
 
     @Transactional
-    public void createTopic(int userId, String titulo, String tipo, String mensagem) {
-        topicos.save(new Topico(usuarios.getReferenceById(userId), titulo.trim(), tipo, mensagem.trim()));
+    public void createTopic(int userId, String titulo, String tipo, String mensagem, List<MultipartFile> fotos) {
+        Topico topico = new Topico(usuarios.getReferenceById(userId), titulo.trim(), tipo, mensagem.trim());
+        List<String> arquivos = fotoStorage.salvar(fotos);
+        for (String arquivo : arquivos) {
+            topico.adicionarFoto(arquivo);
+        }
+
+        try {
+            topicos.saveAndFlush(topico);
+        } catch (RuntimeException e) {
+            fotoStorage.apagar(arquivos);
+            throw e;
+        }
     }
 
     @Transactional(readOnly = true)
@@ -52,4 +67,5 @@ public class ForumService {
         comentarios.save(new Comentario(usuarios.getReferenceById(userId), topicos.getReferenceById(topicId),
             texto.trim()));
     }
+
 }

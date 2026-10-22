@@ -46,7 +46,7 @@ public class UserService {
         usuario.setName(name.trim());
         usuario.setEmail(normalizeEmail(email));
         usuario.setBio(bio.trim());
-        usuarios.flush(); // dispara aqui a violação de UNIQUE, se houver
+        usuarios.flush();
     }
 
     private static String normalizeEmail(String email) {

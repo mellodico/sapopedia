@@ -28,7 +28,6 @@ const NAV_ITEMS = [
 class SiteHeader extends HTMLElement {
   connectedCallback() {
     const active = this.getAttribute("active");
-    // Preenchido pelo servidor; o banco só aceita letras, números e _ no nome de usuário
     const usuario = this.getAttribute("usuario");
     const navHtml = NAV_ITEMS.map(
         (item) => `

@@ -1,9 +1,12 @@
 package com.br.sapopedia.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.Formula;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +15,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
@@ -42,6 +47,10 @@ public class Topico {
     @Formula("(SELECT COUNT(*) FROM forum_replies r WHERE r.topic_id = id)")
     private int totalComentarios;
 
+    @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("posicao")
+    private List<FotoTopico> fotos = new ArrayList<>();
+
     protected Topico() {
     }
 
@@ -57,6 +66,10 @@ public class Topico {
         criadoEm = LocalDateTime.now();
     }
 
+    public void adicionarFoto(String nomeArquivo) {
+        fotos.add(new FotoTopico(this, nomeArquivo, fotos.size()));
+    }
+
     public String tipoLabel() {
         return switch (tipo) {
             case "opiniao" -> "Opinião";
@@ -67,11 +80,35 @@ public class Topico {
         };
     }
 
-    public Integer getId() { return id; }
-    public Usuario getAutor() { return autor; }
-    public String getTitulo() { return titulo; }
-    public String getTipo() { return tipo; }
-    public String getMensagem() { return mensagem; }
-    public LocalDateTime getCriadoEm() { return criadoEm; }
-    public int getTotalComentarios() { return totalComentarios; }
+    public Integer getId() {
+        return id;
+    }
+
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
+    }
+
+    public int getTotalComentarios() {
+        return totalComentarios;
+    }
+
+    public List<FotoTopico> getFotos() {
+        return fotos;
+    }
 }

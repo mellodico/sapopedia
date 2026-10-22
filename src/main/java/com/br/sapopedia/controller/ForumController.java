@@ -1,5 +1,7 @@
 package com.br.sapopedia.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.br.sapopedia.config.FotoInvalidaException;
 import com.br.sapopedia.model.Topico;
 import com.br.sapopedia.service.ForumService;
 
@@ -34,6 +38,7 @@ public class ForumController {
     public String addMessage(@RequestParam String titulo,
                              @RequestParam String tipo,
                              @RequestParam String mensagem,
+                             @RequestParam(required = false) List<MultipartFile> fotos,
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
         Integer usuarioId = SessaoUsuario.idUsuario(session);
@@ -45,12 +50,18 @@ public class ForumController {
         else if (mensagem.trim().length() < 5 || mensagem.trim().length() > 500)
             erro = "A mensagem deve ter de 5 a 500 caracteres.";
 
-        if (erro != null) {
-            redirectAttributes.addFlashAttribute("erro", erro);
-        } else {
-            forumService.createTopic(usuarioId, titulo, tipo, mensagem);
-            redirectAttributes.addFlashAttribute("sucesso", "Mensagem publicada com sucesso.");
+        if (erro == null) {
+            List<MultipartFile> fotosEnviadas = fotos == null ? List.of()
+                : fotos.stream().filter(f -> f != null && !f.isEmpty()).toList();
+            try {
+                forumService.createTopic(usuarioId, titulo, tipo, mensagem, fotosEnviadas);
+                redirectAttributes.addFlashAttribute("sucesso", "Mensagem publicada com sucesso.");
+                return "redirect:/mensagens";
+            } catch (FotoInvalidaException e) {
+                erro = e.getMessage();
+            }
         }
+        redirectAttributes.addFlashAttribute("erro", erro);
         return "redirect:/mensagens";
     }
 

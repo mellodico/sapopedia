@@ -45,7 +45,7 @@
               para publicar no fórum.
             </p>
             <form class="account-form" data-form="mensagens" th:action="@{/mensagens}" method="post"
-              th:if="${usuarioLogado}">
+              enctype="multipart/form-data" th:if="${usuarioLogado}">
               <label for="titulo">Título</label>
               <input type="text" name="titulo" id="titulo" required minlength="2" maxlength="80">
 
@@ -61,6 +61,10 @@
               <label for="mensagem">Mensagem</label>
               <textarea name="mensagem" id="mensagem" rows="8" required minlength="5" maxlength="500"
                 placeholder="Escreva sua mensagem aqui..."></textarea>
+
+              <label for="fotos">Fotos <span class="form-hint">(opcional, até 4 · JPG, PNG, WebP ou GIF · 5 MB cada)</span></label>
+              <input type="file" name="fotos" id="fotos" multiple
+                accept="image/jpeg,image/png,image/webp,image/gif">
 
               <p class="form-message" role="status" th:text="${erro}"></p>
               <p class="form-message form-message--success" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
@@ -88,10 +92,16 @@
                     th:text="${mensagem.tipoLabel()}">Tipo</span>
                 </div>
                 <p class="forum-post__author">por <strong th:text="${mensagem.autor.username}">Autor</strong></p>
-                <p class="forum-post__preview" th:text="${mensagem.mensagem}">Conteúdo da mensagem</p>
+                <div class="forum-post__content">
+                  <img class="forum-post__thumb" th:if="${!#lists.isEmpty(mensagem.fotos)}" th:src="${mensagem.fotos[0].url}" alt=""
+                    loading="lazy">
+                  <p class="forum-post__preview" th:text="${mensagem.mensagem}">Conteúdo da mensagem</p>
+                </div>
                 <div class="forum-post__footer">
                   <time class="forum-post__date" th:datetime="${mensagem.criadoEm}"
                     th:text="${#temporals.format(mensagem.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</time>
+                  <span class="forum-post__image-tag" th:if="${!#lists.isEmpty(mensagem.fotos)}"
+                    th:text="'🖼 ' + ${#lists.size(mensagem.fotos)} + (${#lists.size(mensagem.fotos)} == 1 ? ' foto' : ' fotos')">🖼 1 foto</span>
                   <span class="forum-post__comments"
                     th:text="${mensagem.totalComentarios} + (${mensagem.totalComentarios} == 1 ? ' comentário' : ' comentários')">0 comentários</span>
                 </div>

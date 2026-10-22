@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wiki — SapoPédia</title>
+  <title>SapoPédia - Wiki</title>
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/components.js" defer></script>
   <script src="/js/wiki.js" defer></script>
@@ -52,14 +52,12 @@
             <div>
               <h3 class="wiki-highlights__title">Como usar esta wiki</h3>
               <ol class="wiki-steps">
-                <li><strong>Busque um termo:</strong> digite o nome de uma espécie, família ou gênero no campo de busca,
-                  na barra lateral.</li>
+                <li><strong>Busque um termo:</strong> digite o nome de uma espécie, família, gênero ou termo do glossário
+                  no campo de busca, na barra lateral.</li>
                 <li><strong>Navegue por categoria:</strong> clique em uma das opções do menu à esquerda para ver a lista
                   completa daquela categoria, sem sair desta página.</li>
-                <li><strong>Abra uma ficha:</strong> clique em qualquer item da lista para abrir a página completa, com
-                  descrição e informações sobre o habitat.</li>
-                <li><strong>Contribua:</strong> crie uma conta para sugerir edições, enviar fotos e ajudar a manter a
-                  wiki atualizada.</li>
+                <li><strong>Participe:</strong> crie uma conta para publicar no fórum, compartilhar fotos dos seus
+                  avistamentos e tirar dúvidas com a comunidade.</li>
               </ol>
             </div>
           </section>
@@ -71,19 +69,25 @@
             <div class="wiki-section__header">
               <span class="summary-left">Glossário</span>
             </div>
-            <div class="wiki-section__body wiki-alpha-list">
-              <div class="alpha-group">
-                <h4 class="alpha-group__letter">A</h4>
-                <div class="alpha-group__items">
-                  <a class="wiki-index-link" href="/glossario#anuro">Anuro</a>
-                </div>
-              </div>
-              <div class="alpha-group">
-                <h4 class="alpha-group__letter">G</h4>
-                <div class="alpha-group__items">
-                  <a class="wiki-index-link" href="/glossario#girino">Girino</a>
-                </div>
-              </div>
+            <div class="wiki-section__body wiki-not-implemented" th:if="${#lists.isEmpty(glossario)}">
+              <p>Nenhum termo cadastrado ainda.</p>
+            </div>
+            <div class="wiki-table-wrapper" th:unless="${#lists.isEmpty(glossario)}">
+              <table class="wiki-table">
+                <caption>Glossário de termos sobre anuros</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Termo</th>
+                    <th scope="col">Definição</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="termo : ${glossario}" th:id="${termo.slug}">
+                    <td th:text="${termo.termo}">Anuro</td>
+                    <td th:text="${termo.definicao}">Definição do termo.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </section>
         </div>
@@ -93,8 +97,25 @@
             <div class="wiki-section__header">
               <span class="summary-left">Famílias</span>
             </div>
-            <div class="wiki-section__body wiki-not-implemented">
-              <p>Esta seção ainda não foi implementada.</p>
+            <div class="wiki-section__body wiki-not-implemented" th:if="${#lists.isEmpty(familias)}">
+              <p>Nenhuma família cadastrada ainda.</p>
+            </div>
+            <div class="wiki-table-wrapper" th:unless="${#lists.isEmpty(familias)}">
+              <table class="wiki-table">
+                <caption>Famílias de anuros catalogadas</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Família</th>
+                    <th scope="col">Descrição</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="familia : ${familias}">
+                    <td th:text="${familia.nomeCientifico}">Bufonidae</td>
+                    <td th:text="${familia.descricao}">Descrição</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </section>
         </div>
@@ -104,8 +125,27 @@
             <div class="wiki-section__header">
               <span class="summary-left">Gêneros</span>
             </div>
-            <div class="wiki-section__body wiki-not-implemented">
-              <p>Esta seção ainda não foi implementada.</p>
+            <div class="wiki-section__body wiki-not-implemented" th:if="${#lists.isEmpty(generos)}">
+              <p>Nenhum gênero cadastrado ainda.</p>
+            </div>
+            <div class="wiki-table-wrapper" th:unless="${#lists.isEmpty(generos)}">
+              <table class="wiki-table">
+                <caption>Gêneros de anuros catalogados</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Gênero</th>
+                    <th scope="col">Família</th>
+                    <th scope="col">Descrição</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="genero : ${generos}">
+                    <td><em th:text="${genero.nomeCientifico}">Rhinella</em></td>
+                    <td th:text="${genero.familia.nomeCientifico}">Bufonidae</td>
+                    <td th:text="${genero.descricao}">Descrição</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </section>
         </div>
@@ -115,7 +155,10 @@
             <div class="wiki-section__header">
               <span class="summary-left">Espécies</span>
             </div>
-            <div class="wiki-table-wrapper">
+            <div class="wiki-section__body wiki-not-implemented" th:if="${#lists.isEmpty(especies)}">
+              <p>Nenhuma espécie cadastrada ainda.</p>
+            </div>
+            <div class="wiki-table-wrapper" th:unless="${#lists.isEmpty(especies)}">
               <table class="wiki-table">
                 <caption>Espécies de anuros brasileiros catalogadas</caption>
                 <thead>
@@ -126,20 +169,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><em>Rhinella schneideri</em></td>
-                    <td>Sapo-cururu</td>
-                    <td>Cerrado</td>
-                  </tr>
-                  <tr>
-                    <td><em>Boana albomarginata</em></td>
-                    <td>Perereca-verde</td>
-                    <td>Mata Atlântica</td>
-                  </tr>
-                  <tr>
-                    <td><em>Phyllobates terribilis</em></td>
-                    <td>Sapo-de-dardo</td>
-                    <td>Amazônia</td>
+                  <tr th:each="especie : ${especies}">
+                    <td><em th:text="${especie.nomeCientifico}">Rhinella diptycha</em></td>
+                    <td th:text="${especie.nomePopular}">Sapo-cururu</td>
+                    <td th:text="${especie.nomesBiomas}">Cerrado</td>
                   </tr>
                 </tbody>
               </table>

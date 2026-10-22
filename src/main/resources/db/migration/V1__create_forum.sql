@@ -7,21 +7,24 @@ CREATE TABLE users (
   email VARCHAR(100) NOT NULL UNIQUE
     CHECK(email ~* '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$'),
   password_hash VARCHAR(255) NOT NULL,
+  bio VARCHAR(240) NOT NULL DEFAULT '',
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE forum_topics (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL REFERENCES users(id),
-  title VARCHAR(80) NOT NULL,
+  title VARCHAR(80) NOT NULL
+    CHECK(length(trim(title)) >= 2),
   type VARCHAR(20) NOT NULL
-      CHECK(type IN ('opiniao', 'sugestao', 'avistamento', 'duvida', 'outro')),
+    CHECK(type IN ('opiniao', 'sugestao', 'avistamento', 'duvida', 'outro')),
   body VARCHAR(500) NOT NULL
-    CHECK(length(trim(body)) > 0),
+    CHECK(length(trim(body)) >= 5),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX ix_forum_topics_user_id ON forum_topics (user_id);
+CREATE INDEX ix_forum_topics_created_at ON forum_topics (created_at DESC);
 
 CREATE TABLE forum_replies (
   id SERIAL PRIMARY KEY,
@@ -29,7 +32,7 @@ CREATE TABLE forum_replies (
   topic_id INT NOT NULL REFERENCES forum_topics(id) ON DELETE CASCADE,
   parent_reply_id INT,
   body VARCHAR(500) NOT NULL
-    CHECK(length(trim(body)) > 0),
+    CHECK(length(trim(body)) >= 2),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   UNIQUE(id, topic_id),

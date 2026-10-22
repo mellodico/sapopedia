@@ -41,3 +41,6 @@ nbdist/
 
 # Configuração local com segredos (veja config/application.properties.example)
 /config/application.properties
+
+# Fotos enviadas pelos usuários
+/uploads/

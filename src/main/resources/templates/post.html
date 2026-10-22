@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/components.js" defer></script>
   <script src="/js/script.js" defer></script>
-  <title th:text="${mensagem.titulo} + ' - SapoPédia'">SapoPédia - Post</title>
+  <title th:text="'SapoPédia - ' + ${mensagem.titulo}">SapoPédia - Post</title>
 </head>
 
 <body>
@@ -28,6 +28,12 @@
             <time th:datetime="${mensagem.criadoEm}"
               th:text="${#temporals.format(mensagem.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</time></p>
           <p class="post-detail__body" th:text="${mensagem.mensagem}">Conteúdo da mensagem</p>
+          <div class="post-photos" th:unless="${#lists.isEmpty(mensagem.fotos)}">
+            <a class="post-photos__item" th:each="foto, i : ${mensagem.fotos}" th:href="${foto.url}" target="_blank"
+              rel="noopener">
+              <img th:src="${foto.url}" th:alt="'Foto ' + ${i.count} + ' do post ' + ${mensagem.titulo}" loading="lazy">
+            </a>
+          </div>
         </article>
 
         <section class="post-comments" id="comentarios">

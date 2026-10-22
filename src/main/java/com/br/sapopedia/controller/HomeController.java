@@ -10,17 +10,4 @@ public class HomeController {
     public String showHomePage() {
         return "index";
     }
-
-    @GetMapping("/wiki")
-    public String showWikiPage() {
-        return "wiki";
-    }
-
-    @GetMapping("/imagens")
-    public String showImagesPage() {
-        return "imagens";
-    }
-
-    @GetMapping("/glossario")
-    public String showGlossary() { return "glossario"; }
 }

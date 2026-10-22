@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class AuthController {
 
-    // Mesmas regras dos CHECKs da tabela users
     private static final Pattern USERNAME = Pattern.compile("^[A-Za-z0-9_]{3,50}$");
     private static final Pattern EMAIL = Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
 
@@ -142,11 +141,10 @@ public class AuthController {
 
     private static void iniciarSessao(HttpServletRequest request, int usuarioId) {
         HttpSession session = request.getSession();
-        request.changeSessionId(); // evita fixação de sessão
+        request.changeSessionId();
         session.setAttribute(SessaoUsuario.ATRIBUTO_ID, usuarioId);
     }
 
-    /** Só permite redirecionar para caminhos internos do site. */
     static String destinoSeguro(String voltar, String padrao) {
         if (voltar == null || !voltar.startsWith("/") || voltar.startsWith("//") || voltar.contains("\\")) {
             return padrao;

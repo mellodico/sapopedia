@@ -8,10 +8,6 @@ import com.br.sapopedia.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
-/**
- * Guarda o id do usuário logado na sessão HTTP e disponibiliza o usuário
- * como "usuarioLogado" para todos os templates.
- */
 @ControllerAdvice
 public class SessaoUsuario {
 
@@ -26,7 +22,10 @@ public class SessaoUsuario {
     @ModelAttribute("usuarioLogado")
     public Usuario usuarioLogado(HttpSession session) {
         Integer id = idUsuario(session);
-        return id == null ? null : userService.findById(id).orElse(null);
+        if (id == null) return null;
+        Usuario usuario = userService.findById(id).orElse(null);
+        if (usuario == null) session.removeAttribute(ATRIBUTO_ID);
+        return usuario;
     }
 
     static Integer idUsuario(HttpSession session) {

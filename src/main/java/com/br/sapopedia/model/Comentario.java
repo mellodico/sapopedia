@@ -13,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
-/** Resposta a um tópico do fórum (a coluna parent_reply_id ainda não é usada). */
 @Entity
 @Table(name = "forum_replies")
 public class Comentario {
@@ -50,9 +49,23 @@ public class Comentario {
         criadoEm = LocalDateTime.now();
     }
 
-    public Integer getId() { return id; }
-    public Usuario getAutor() { return autor; }
-    public Topico getTopico() { return topico; }
-    public String getTexto() { return texto; }
-    public LocalDateTime getCriadoEm() { return criadoEm; }
+    public Integer getId() {
+        return id;
+    }
+
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    public Topico getTopico() {
+        return topico;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
+    }
 }

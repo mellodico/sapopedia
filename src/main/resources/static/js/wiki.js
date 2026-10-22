@@ -11,6 +11,12 @@ function abrirPainel(nome) {
   });
 }
 
+const alvo = decodeURIComponent(location.hash.slice(1));
+if (alvo) {
+  const painel = document.getElementById(`panel-${alvo}`) ?? document.getElementById(alvo)?.closest(".wiki-panel");
+  if (painel) abrirPainel(painel.id.replace("panel-", ""));
+}
+
 navLinks.forEach((el) => {
   el.addEventListener("click", (event) => {
     event.preventDefault();
@@ -30,21 +36,6 @@ if (searchInput) {
 
     searchablePanels.forEach((panel) => {
       let algumVisivelNoPainel = false;
-
-      panel.querySelectorAll(".alpha-group").forEach((grupo) => {
-        const links = grupo.querySelectorAll(".wiki-index-link");
-        let algumVisivelNoGrupo = false;
-
-        links.forEach((link) => {
-          const texto = link.textContent.trim().toLowerCase();
-          const combina = termo === "" || texto.includes(termo);
-          link.classList.toggle("no-match", !combina);
-          if (combina) algumVisivelNoGrupo = true;
-        });
-
-        grupo.classList.toggle("no-match", !algumVisivelNoGrupo);
-        if (algumVisivelNoGrupo) algumVisivelNoPainel = true;
-      });
 
       panel.querySelectorAll(".wiki-table tbody tr").forEach((row) => {
         const combina =

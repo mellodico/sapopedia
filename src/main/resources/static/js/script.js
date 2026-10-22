@@ -40,15 +40,29 @@ function initializeMessages() {
   });
 
   messagesForm.addEventListener("submit", (event) => {
-    const hasTitle = titleField.value.trim().length > 0;
-    const hasMessage = messageField.value.trim().length > 0;
+    const hasTitle = titleField.value.trim().length >= 2;
+    const hasMessage = messageField.value.trim().length >= 5;
 
     titleField.classList.toggle("is-invalid", !hasTitle);
     messageField.classList.toggle("is-invalid", !hasMessage);
 
-    if (!hasTitle && !hasMessage) {
+    if (!hasTitle || !hasMessage) {
       event.preventDefault();
-      showMessage(feedback, "Preencha o título e escreva uma mensagem.", true);
+      showMessage(
+        feedback,
+        !hasTitle ? "O título deve ter de 2 a 80 caracteres." : "A mensagem deve ter de 5 a 500 caracteres.",
+        true,
+      );
+      return;
+    }
+
+    const photos = [...(messagesForm.fotos?.files ?? [])];
+    if (photos.length > 4) {
+      event.preventDefault();
+      showMessage(feedback, "Envie no máximo 4 fotos.", true);
+    } else if (photos.some((photo) => photo.size > 5 * 1024 * 1024)) {
+      event.preventDefault();
+      showMessage(feedback, "Cada foto pode ter no máximo 5 MB.", true);
     }
   });
 }
@@ -68,10 +82,6 @@ function initializeAuth() {
   const loginForm = document.querySelector('[data-form="login"]');
   const registerForm = document.querySelector('[data-form="registro"]');
   const accountForm = document.querySelector('[data-form="conta"]');
-
-  // Versões antigas guardavam a conta (com senha) no navegador
-  localStorage.removeItem("sapopedia-conta");
-  localStorage.removeItem("sapopedia-sessao");
 
   if (loginForm) {
     addEmailValidation(loginForm.email);

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/components.js" defer></script>
-  <title>SapoPédia</title>
+  <title>SapoPédia - Imagens</title>
 </head>
 
 <body>
@@ -21,10 +21,11 @@
         </div>
       </section>
 
-      <section class="gallery-grid" aria-label="Galeria da wiki">
-        <img class="gallery-item" src="img/foto2.jpg" alt="Anfíbio em ambiente natural">
-        <img class="gallery-item" src="img/foto3.jpg" alt="Detalhe de sapo em primeiro plano">
-        <img class="gallery-item" src="img/foto4.jpg" alt="Paisagem com anfíbios e vegetação">
+      <p class="forum-empty" th:if="${#lists.isEmpty(imagens)}">Nenhuma imagem cadastrada ainda.</p>
+
+      <section class="gallery-grid" aria-label="Galeria da wiki" th:unless="${#lists.isEmpty(imagens)}">
+        <img class="gallery-item" th:each="imagem : ${imagens}" th:src="@{'/' + ${imagem.caminho}}"
+          th:alt="${imagem.textoAlternativo}" th:title="${imagem.legenda}" src="/img/foto3.jpg" alt="Imagem da galeria">
       </section>
     </main>
 
