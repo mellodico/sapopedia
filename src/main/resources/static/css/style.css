@@ -791,6 +791,44 @@ body {
   color: var(--preto);
 }
 
+.post-page > .form-message {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #d9342b;
+}
+
+.post-page > .form-message--success {
+  color: var(--verde-escuro);
+}
+
+.post-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.post-actions a,
+.post-actions button {
+  font-family: var(--fonte-corpo);
+  font-weight: 800;
+  font-size: 13px;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border: var(--borda);
+  border-radius: 10px;
+  box-shadow: var(--sombra-pequena);
+  background: var(--verde);
+  color: var(--preto);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.post-actions button {
+  background: #d9342b;
+  color: var(--branco);
+}
+
 .post-detail {
   background: var(--branco);
   border: var(--borda);

@@ -44,23 +44,28 @@
               <a th:href="@{/login(voltar='/mensagens')}">Entre</a> ou <a th:href="@{/registro}">crie uma conta</a>
               para publicar no fórum.
             </p>
-            <form class="account-form" data-form="mensagens" th:action="@{/mensagens}" method="post"
+            <form class="account-form" data-form="mensagens" th:action="@{/mensagens}" th:object="${form}" method="post"
               enctype="multipart/form-data" th:if="${usuarioLogado}">
               <label for="titulo">Título</label>
-              <input type="text" name="titulo" id="titulo" required minlength="2" maxlength="80">
+              <input type="text" th:field="*{titulo}" required minlength="2" maxlength="80"
+                th:classappend="${#fields.hasErrors('titulo')} ? 'is-invalid'">
+              <p class="form-message" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></p>
 
               <label for="tipo">Tipo de mensagem</label>
-              <select name="tipo" id="tipo">
+              <select th:field="*{tipo}">
                 <option value="opiniao">Opinião</option>
                 <option value="sugestao">Sugestão</option>
                 <option value="avistamento">Avistamento</option>
                 <option value="duvida">Dúvida</option>
                 <option value="outro">Outro</option>
               </select>
+              <p class="form-message" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></p>
 
               <label for="mensagem">Mensagem</label>
-              <textarea name="mensagem" id="mensagem" rows="8" required minlength="5" maxlength="500"
+              <textarea th:field="*{mensagem}" rows="8" required minlength="5" maxlength="500"
+                th:classappend="${#fields.hasErrors('mensagem')} ? 'is-invalid'"
                 placeholder="Escreva sua mensagem aqui..."></textarea>
+              <p class="form-message" th:if="${#fields.hasErrors('mensagem')}" th:errors="*{mensagem}"></p>
 
               <label for="fotos">Fotos <span class="form-hint">(opcional, até 4 · JPG, PNG, WebP ou GIF · 5 MB cada)</span></label>
               <input type="file" name="fotos" id="fotos" multiple

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/components.js" defer></script>
+  <script src="/js/script.js" defer></script>
+  <title>SapoPédia - Editar post</title>
+</head>
+
+<body>
+  <div class="container">
+    <site-header active="mensagens" th:attr="usuario=${usuarioLogado?.username}"></site-header>
+
+    <main>
+      <section class="post-page">
+        <a class="post-back" th:href="@{/mensagens/{id}(id=${topicoId})}">← Voltar ao post</a>
+
+        <div class="account-panel">
+          <h2>Editar post</h2>
+          <form class="account-form" th:action="@{/mensagens/{id}/editar(id=${topicoId})}" th:object="${form}"
+            method="post">
+            <label for="titulo">Título</label>
+            <input type="text" th:field="*{titulo}" required minlength="2" maxlength="80"
+              th:classappend="${#fields.hasErrors('titulo')} ? 'is-invalid'">
+            <p class="form-message" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></p>
+
+            <label for="tipo">Tipo de mensagem</label>
+            <select th:field="*{tipo}">
+              <option value="opiniao">Opinião</option>
+              <option value="sugestao">Sugestão</option>
+              <option value="avistamento">Avistamento</option>
+              <option value="duvida">Dúvida</option>
+              <option value="outro">Outro</option>
+            </select>
+            <p class="form-message" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></p>
+
+            <label for="mensagem">Mensagem</label>
+            <textarea th:field="*{mensagem}" rows="8" required minlength="5" maxlength="500"
+              th:classappend="${#fields.hasErrors('mensagem')} ? 'is-invalid'"></textarea>
+            <p class="form-message" th:if="${#fields.hasErrors('mensagem')}" th:errors="*{mensagem}"></p>
+
+            <div class="form-buttons">
+              <button type="submit">Salvar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <site-footer></site-footer>
+  </div>
+</body>
+
+</html>

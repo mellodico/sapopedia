@@ -83,7 +83,7 @@ public class Especie {
     }
 
     public String getNomesBiomas() {
-        return biomas.stream().map(Bioma::getNome).sorted().collect(Collectors.joining(", "));
+        return biomas.stream().map(bioma -> bioma.getNome()).sorted().collect(Collectors.joining(", "));
     }
 
     public Integer getId() {

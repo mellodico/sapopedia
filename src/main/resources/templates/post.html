@@ -18,6 +18,9 @@
       <section class="post-page">
         <a class="post-back" th:href="@{/mensagens}">← Voltar ao fórum</a>
 
+        <p class="form-message" role="status" th:if="${erroPost}" th:text="${erroPost}"></p>
+        <p class="form-message form-message--success" role="status" th:if="${sucessoPost}" th:text="${sucessoPost}"></p>
+
         <article class="post-detail">
           <div class="forum-post__header">
             <h1 class="forum-post__title" th:text="${mensagem.titulo}">Título da mensagem</h1>
@@ -33,6 +36,13 @@
               rel="noopener">
               <img th:src="${foto.url}" th:alt="'Foto ' + ${i.count} + ' do post ' + ${mensagem.titulo}" loading="lazy">
             </a>
+          </div>
+          <div class="post-actions" th:if="${podeEditar}">
+            <a class="post-actions__editar" th:href="@{/mensagens/{id}/editar(id=${mensagem.id})}">Editar</a>
+            <form th:action="@{/mensagens/{id}/excluir(id=${mensagem.id})}" method="post"
+              onsubmit="return confirm('Tem certeza que quer excluir esse post?')">
+              <button type="submit" class="post-actions__excluir">Excluir</button>
+            </form>
           </div>
         </article>
 
