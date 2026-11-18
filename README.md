@@ -29,10 +29,20 @@ A SapoPédia reúne uma wiki sobre anuros brasileiros e um espaço de comunidade
 A senha do banco não fica no repositório. Antes de executar, copie o arquivo de exemplo e preencha a senha:
 
 ```bash
-cp config/application.properties.example config/application.properties
+cp config/application-local.properties.example config/application-local.properties
 ```
 
-O arquivo `config/application.properties` é ignorado pelo git. Também é possível usar as variáveis de ambiente `DB_PASSWORD`, `DB_URL` e `DB_USERNAME`.
+O arquivo `config/application-local.properties` é ignorado pelo git e só é lido no perfil `local` (o padrão quando nenhum perfil é informado), então não interfere nos perfis `dev`, `test` e `prod`. Também é possível usar as variáveis de ambiente `DB_PASSWORD`, `DB_URL` e `DB_USERNAME`.
+
+### Banco Neon (dev, test e prod)
+
+Cada ambiente usa uma branch do Neon. Os perfis do Spring `dev`, `test` e `prod` leem as credenciais dos arquivos `.env.dev.local`, `.env.test.local` e `.env.prod.local` na raiz do projeto (ignorados pelo git), que devem conter `DB_URL` (no formato `jdbc:postgresql://<host-sem-pooler>/neondb?sslmode=require`), `DB_USERNAME` e `DB_PASSWORD`. Para executar com um perfil:
+
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+Sem perfil, a aplicação continua usando o PostgreSQL local.
 
 As fotos enviadas nos posts do fórum são gravadas na pasta `uploads/` da raiz do projeto (também ignorada pelo git). Para usar outra pasta, defina a variável de ambiente `UPLOADS_DIR`.
 
@@ -67,3 +77,22 @@ Depois, acesse `http://localhost:8080`.
 - `GET /conta` / `POST /conta` - dados da conta do usuário logado / atualização
 
 As páginas são renderizadas no servidor com Thymeleaf. As senhas são salvas com hash BCrypt e o usuário logado é mantido na sessão HTTP.
+
+## Docker
+
+```bash
+docker build -t sapopedia .
+docker run --rm -p 8080:8080 --env-file .env.prod.local sapopedia
+```
+
+A imagem usa o perfil `prod` por padrão e lê `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` das variáveis de ambiente.
+
+## Deploy no Render (Web Service)
+
+O arquivo `render.yaml` define um Web Service Docker que faz deploy automático a partir da branch `prod`.
+
+1. No Render, vá em **New → Blueprint** e selecione este repositório.
+2. Preencha as variáveis `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` com os dados da branch `prod` do Neon (conexão direta, sem `-pooler`, com `?sslmode=require`).
+3. O health check usa `/actuator/health`.
+
+Observação: o disco do Render é efêmero, então as fotos enviadas em `uploads/` são perdidas a cada deploy ou reinício.

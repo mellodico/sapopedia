@@ -39,8 +39,15 @@ nbdist/
 !.env.example
 *.log
 
-# Configuração local com segredos (veja config/application.properties.example)
-/config/application.properties
+# Configuração local com segredos (veja config/application-local.properties.example)
+/config/application-local.properties
 
 # Fotos enviadas pelos usuários
 /uploads/
+
+# Notas locais
+info.md
+
+# Neon CLI (link local do projeto e dependências do npx)
+.neon
+node_modules/
